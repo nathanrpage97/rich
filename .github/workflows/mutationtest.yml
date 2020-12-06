@@ -30,6 +30,14 @@ jobs:
         run: poetry install
         if: steps.cached-poetry-dependencies.outputs.cache-hit != 'true'
       - name: Test with pytest
-        run: make test
+        run: pytest --junitxml=report.xml tests/ -vv
       - name: Mutation Test
         run: make mutation-test
+      # - name: Generate Report
+      #   run: mutmut junitxml --suspicious-policy=ignore --untested-policy=ignore > mutation-report.xml
+      - name: Publish Mutation Test Results
+        uses: EnricoMi/publish-unit-test-result-action@v1.6
+        if: always()
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          files: report.xml

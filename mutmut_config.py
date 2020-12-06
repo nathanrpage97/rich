@@ -12,6 +12,11 @@ def pre_mutation(context: "Context"):
 
     filename = filename[len("rich/") :] if filename.startswith("rich/") else filename
 
+    # temporary to simplify test time
+    if context.mutation_id_of_current_index.index > 25:
+        context.skip = True
+        return
+
     test_file = f"test_{filename}"
     if Path(__file__).parent.joinpath("tests", test_file).is_file():
         config.test_command = f"pytest -x tests/{test_file}"
