@@ -31,8 +31,8 @@ jobs:
         if: steps.cached-poetry-dependencies.outputs.cache-hit != 'true'
       - name: Test with pytest
         run: pytest --junitxml=report.xml tests/ -vv
-      - name: Mutation Test
-        run: make mutation-test
+      # - name: Mutation Test
+      #   run: make mutation-test
       # - name: Generate Report
       #   run: mutmut junitxml --suspicious-policy=ignore --untested-policy=ignore > mutation-report.xml
       - name: Publish Mutation Test Results
