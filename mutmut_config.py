@@ -14,7 +14,7 @@ def pre_mutation(context: "Context"):
 
     test_file = f"test_{filename}"
     if Path(__file__).parent.joinpath("tests", test_file).is_file():
-        config.test_command = f"hammett -x tests/{test_file}"
+        config.test_command = f"pytest -x tests/{test_file}"
         if filename == "console.py":
             config.test_command = f"pytest -x tests/{test_file}"
 
