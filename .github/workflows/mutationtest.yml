@@ -1,10 +1,10 @@
 name: Mutation Test Rich Module
 
 on:
-  # schedule:
-  #   - cron: '0 11 * * *'
-  workflow_dispatch:
+  pull_request:
   push:
+    branches:
+      - master
 
 
 
