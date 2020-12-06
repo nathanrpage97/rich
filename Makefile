@@ -1,7 +1,7 @@
 test:
 	pytest --cov-report term-missing --cov=rich tests/ -vv
 mutation-test:
-	mutmut run --use-coverage
+	@mutmut run --use-coverage || true
 format-check:
 	black --check .
 format:

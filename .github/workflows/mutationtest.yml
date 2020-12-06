@@ -1,11 +1,10 @@
 name: Mutation Test Rich Module
 
 on:
-  # schedule:
-  #   - cron: '0 11 * * *'
-  workflow_dispatch:
-
-
+  pull_request:
+  push:
+    branches:
+      - master
 
 jobs:
   mutation-test:
@@ -15,10 +14,10 @@ jobs:
         shell: bash
     steps:
       - uses: actions/checkout@v1
-      - name: Set up Python ${{ matrix.python-version }}
+      - name: Set up Python 3.8
         uses: actions/setup-python@v2
         with:
-          python-version: ${{ matrix.python-version }}
+          python-version: 3.8
           architecture: x64
       - name: Install and configure Poetry
         uses: snok/install-poetry@v1.1.1
@@ -28,5 +27,22 @@ jobs:
       - name: Install dependencies
         run: poetry install
         if: steps.cached-poetry-dependencies.outputs.cache-hit != 'true'
+      - name: Test with pytest
+        run: pytest --junitxml=report.xml -v --cov=./rich --cov-report=xml:./coverage.xml --cov-report term-missing tests/
       - name: Mutation Test
         run: make mutation-test
+      - name: Generate Report
+        run: mutmut junitxml --suspicious-policy=failure --untested-policy=skipped > report-mutation.xml
+        timeout-minutes: 1
+      - name: Archive Test Reports
+        uses: actions/upload-artifact@v2
+        with:
+          name: test-reports
+          path: |
+            report*.xml
+      - name: Publish Mutation Test Results
+        uses: EnricoMi/publish-unit-test-result-action@v1.6
+        if: always()
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          files: report*.xml
