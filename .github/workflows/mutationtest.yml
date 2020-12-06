@@ -29,5 +29,7 @@ jobs:
       - name: Install dependencies
         run: poetry install
         if: steps.cached-poetry-dependencies.outputs.cache-hit != 'true'
+      - name: Test with pytest
+        run: make test
       - name: Mutation Test
         run: make mutation-test
