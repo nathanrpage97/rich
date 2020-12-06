@@ -34,7 +34,7 @@ jobs:
       - name: Mutation Test
         run: make mutation-test
       - name: Generate Report
-        run: mutmut junitxml --suspicious-policy=ignore --untested-policy=ignore > report-mutation.xml
+        run: mutmut junitxml --suspicious-policy=ignore --untested-policy=skipped > report-mutation.xml
       - name: Publish Mutation Test Results
         uses: EnricoMi/publish-unit-test-result-action@v1.6
         if: always()
