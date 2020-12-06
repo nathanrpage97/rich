@@ -35,6 +35,7 @@ jobs:
         run: make mutation-test
       - name: Generate Report
         run: mutmut junitxml --suspicious-policy=failure --untested-policy=skipped > report-mutation.xml
+        timeout-minutes: 1
       - name: Publish Mutation Test Results
         uses: EnricoMi/publish-unit-test-result-action@v1.6
         if: always()

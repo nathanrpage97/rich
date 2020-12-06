@@ -1,3 +1,4 @@
+import time
 from pathlib import Path
 from typing import TYPE_CHECKING
 
@@ -11,11 +12,6 @@ def pre_mutation(context: "Context"):
     config: "Config" = context.config
 
     filename = filename[len("rich/") :] if filename.startswith("rich/") else filename
-
-    # temporary to simplify test time
-    if context.mutation_id_of_current_index.index > 25:
-        context.skip = True
-        return
 
     test_file = f"test_{filename}"
     if Path(__file__).parent.joinpath("tests", test_file).is_file():
