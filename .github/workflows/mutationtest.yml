@@ -6,8 +6,6 @@ on:
     branches:
       - master
 
-
-
 jobs:
   mutation-test:
     runs-on: ubuntu-latest
@@ -36,6 +34,12 @@ jobs:
       - name: Generate Report
         run: mutmut junitxml --suspicious-policy=failure --untested-policy=skipped > report-mutation.xml
         timeout-minutes: 1
+      - name: Archive Test Reports
+        uses: actions/upload-artifact@v2
+        with:
+          name: test-reports
+          path: |
+            report*.xml
       - name: Publish Mutation Test Results
         uses: EnricoMi/publish-unit-test-result-action@v1.6
         if: always()
