@@ -30,7 +30,7 @@ jobs:
         run: poetry install
         if: steps.cached-poetry-dependencies.outputs.cache-hit != 'true'
       - name: Test with pytest
-        run: pytest --junitxml=report.xml tests/ -vv
+        run: pytest --junitxml=report.xml -v --cov=./rich --cov-report=xml:./coverage.xml --cov-report term-missing tests/
       - name: Mutation Test
         run: make mutation-test
       - name: Generate Report
